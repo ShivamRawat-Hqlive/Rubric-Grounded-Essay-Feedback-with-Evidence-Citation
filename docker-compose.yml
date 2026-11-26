@@ -1,0 +1,35 @@
+# Phase 2: PostgreSQL and Redis only.
+# API, ARQ worker, and frontend run natively on Windows (see README).
+# Full-stack images are added in Phase 13 via profile "full".
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: essay-eval-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-essay}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in the repository-root .env file}
+      POSTGRES_DB: ${POSTGRES_DB:-essay_eval}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-essay} -d ${POSTGRES_DB:-essay_eval}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: essay-eval-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres_data:
