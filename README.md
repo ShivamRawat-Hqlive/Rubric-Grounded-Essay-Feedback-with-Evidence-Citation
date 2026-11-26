@@ -1,6 +1,6 @@
 # Rubric-Grounded Essay Feedback with Evidence Citation
 
-A small local portfolio project demonstrating document extraction, rubric-based
+A project demonstrating document extraction, rubric-based
 essay feedback, exact evidence quotations, and a faculty review step.
 
 ## Local demonstration
